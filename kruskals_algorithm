@@ -1,0 +1,109 @@
+#include<iostream>
+using namespace std;
+
+class edge
+{
+	  public:
+		int u,v,w;
+		edge()
+		{
+			u=v=w=0;
+		}
+	    edge(int x,int y, int z)
+		{
+			u=x;
+			v=y;
+			w=z;
+			
+		}
+};
+
+
+
+//---------kruskals------------------------
+void kruskals()
+{
+	int u,v,w;
+	int n;
+	cout<<endl<<"enter the no of vertices :";
+	cin>>n;
+	edge elist[30],span[30];
+	cout<<endl<<"enetr edges in form of [u v w] :";
+	int k=0;
+	while(1)
+	{
+		cin>>u>>v>>w;
+		if(u != -1)
+		{
+			elist[k].u=u;
+			elist[k].v=v;
+			elist[k].w=w;
+			k++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	edge temp;
+	int cu,cv;
+	for(int i=0;i<k;i++)
+	{
+		for(int j=i+1;j<k;j++)
+		{
+			if(elist[i].w > elist[j].w)
+			{
+				temp = elist[i];
+				elist[i]=elist[j];
+				elist[j]=temp;
+			}
+		}
+	}
+	cout<<endl<<"given graph is :";
+	for(int i=0;i<k;i++)
+	{
+		cout<<elist[i].u<<" "<<elist[i].v<<" "<<elist[i].w<<endl;
+	}
+	int component[n];
+	for(int i=0 ;i<n ;i++)
+	{
+		component[i]=i;
+	}
+  
+	//start the algorithm
+  
+	int ind=0,i=0;
+	int ne = n-1;
+	int mincost=0;
+	while(i<ne)
+	{
+		cu = elist[i].u;
+		cv = elist[i].v;
+		if(cu != cv)
+		{
+		   span[ind]=elist[i];
+		   mincost = mincost + span[ind].w;
+		   ind++;
+		   
+		   for(int m=0;m<n;m++)
+		   {
+		     if(component[m] == cv)
+			 {
+			   component[m]= cu;	
+			 }	
+		   }	
+		}
+		i++;
+	}
+	cout<<endl<<"your span list :"<<endl;
+	for(int x=0;x<ind;x++)
+	{
+		cout<<span[x].u<<" "<<span[x].v<<" "<<span[x].w<<endl;
+	}
+	cout<<endl<<"your minimum cost is :"<<mincost;
+		
+}
+int main()
+{
+	kruskals();	
+}
